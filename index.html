@@ -3,102 +3,261 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redirecionador</title>
+  <title>Access Denied</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Roboto:wght@300;400&display=swap');
+
     body {
-      font-family: Arial, sans-serif;
-      background: #121212;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #0a0a0a, #1a0033);
       color: #fff;
-      text-align: center;
-      padding: 50px;
+      font-family: 'Roboto', sans-serif;
+      min-height: 100vh;
+      overflow: hidden;
     }
-    #senhaContainer, #menuContainer {
-      max-width: 500px;
+
+    .container {
+      display: flex;
+      height: 100vh;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 30px;
-      background: #1e1e1e;
-      border-radius: 10px;
     }
+
+    /* Tela de Senha */
+    #senhaContainer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(20, 20, 40, 0.95);
+      padding: 40px 50px;
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(138, 43, 226, 0.5);
+      text-align: center;
+      z-index: 100;
+      transition: all 0.4s;
+    }
+
+    #senhaContainer h1 {
+      font-family: 'Orbitron', sans-serif;
+      color: #9d4edd;
+      margin-bottom: 10px;
+    }
+
     input {
-      padding: 12px;
-      font-size: 18px;
-      width: 80%;
-      margin: 15px 0;
-      border: none;
-      border-radius: 5px;
-    }
-    button {
-      padding: 12px 25px;
-      font-size: 16px;
-      background: #0066ff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover { background: #0055dd; }
-    .site-btn {
-      display: block;
-      margin: 12px auto;
-      width: 90%;
-      padding: 14px;
       background: #222;
-      color: #0cf;
-      text-decoration: none;
-      border-radius: 5px;
-      font-size: 16px;
+      border: 2px solid #6b46c1;
+      color: white;
+      padding: 14px;
+      font-size: 18px;
+      border-radius: 8px;
+      width: 220px;
+      text-align: center;
+      margin: 15px 0;
     }
-    .site-btn:hover { background: #333; }
-    h1 { color: #0cf; }
+
+    button {
+      background: linear-gradient(90deg, #6b46c1, #9d4edd);
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.08);
+    }
+
+    /* Animação de shake */
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      50% { transform: translateX(8px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+
+    .shake { animation: shake 0.4s ease; }
+
+    /* Menu Principal */
+    #menuContainer {
+      display: none;
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.8rem;
+      background: linear-gradient(90deg, #c026d3, #7e22ce);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sites {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4);
+      border-color: #a855f7;
+    }
+
+    .card h3 {
+      margin: 10px 0 8px;
+      color: #c4b5fd;
+    }
+
+    /* Player de Música */
+    .player {
+      width: 380px;
+      background: rgba(15, 15, 35, 0.95);
+      border-left: 1px solid #6b46c1;
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .player h3 {
+      text-align: center;
+      color: #c026d3;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    audio {
+      width: 100%;
+      filter: drop-shadow(0 0 8px #a855f7);
+    }
+
+    .now-playing {
+      text-align: center;
+      font-size: 14px;
+      opacity: 0.8;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Tela da Senha -->
+  <!-- Tela de Senha -->
   <div id="senhaContainer">
-    <h1>🔒 Acesso Restrito</h1>
-    <p>Digite a senha para continuar:</p>
-    <input type="password" id="senhaInput" placeholder="Digite a senha" autocomplete="off">
-    <br>
-    <button onclick="verificarSenha()">Entrar</button>
-    <p id="erro" style="color: red; margin-top: 10px;"></p>
+    <h1>🔐 ACESSO RESTRITO</h1>
+    <p>Digite a senha para continuar</p>
+    <input type="password" id="senhaInput" placeholder="••••" autocomplete="off">
+    <br><br>
+    <button onclick="verificarSenha()">ENTRAR</button>
+    <p id="erro" style="color: #ff4d4d; margin-top: 15px; min-height: 24px;"></p>
   </div>
 
-  <!-- Menu de Sites (escondido inicialmente) -->
-  <div id="menuContainer" style="display: none;">
-    <h1>Escolha o Site</h1>
-    
-    <a href="https://ubg365.org/category/arcade" target="_blank" class="site-btn">🕹️ UBG365 - Arcade</a>
-    <a href="https://www.ps1fun.com/?ch=b" target="_blank" class="site-btn">🎮 PS1Fun</a>
-    <a href="https://emupedia.net/beta/emuos/" target="_blank" class="site-btn">🖥️ Emupedia</a>
-    <a href="https://veck.io" target="_blank" class="site-btn">🌐 Veck.io</a>
-    <a href="https://gabrielnadamacho.github.io" target="_blank" class="site-btn">📂 Gabriel Nadamacho</a>
-    
-    <!-- Adicione mais sites aqui -->
-    <!-- <a href="https://outrosite.com" target="_blank" class="site-btn">Nome do Site</a> -->
+  <!-- Conteúdo Principal -->
+  <div class="container" id="menuContainer">
+
+    <!-- Lista de Sites -->
+    <div id="menuContainer" style="flex:1;">
+      <div class="header">
+        <h1>ESCOLHA O JOGO</h1>
+        <p style="opacity:0.7;">Se divirta com responsabilidade 😉</p>
+      </div>
+
+      <div class="sites">
+        <a href="https://ubg365.org/category/arcade" target="_blank" class="card">
+          <h3>🕹️ UBG365 Arcade</h3>
+          <p>Milhares de jogos online</p>
+        </a>
+        <a href="https://www.ps1fun.com/?ch=b" target="_blank" class="card">
+          <h3>🎮 PS1Fun</h3>
+          <p>Emulador de PlayStation 1</p>
+        </a>
+        <a href="https://emupedia.net/beta/emuos/" target="_blank" class="card">
+          <h3>🖥️ Emupedia</h3>
+          <p>Emuladores retro</p>
+        </a>
+        <a href="https://shellshock.io/" target="_blank" class="card">
+          <h3>💥 Shell Shock</h3>
+          <p>Jogo de tanques multiplayer</p>
+        </a>
+        <a href="https://veck.io" target="_blank" class="card">
+          <h3>🌐 Veck.io</h3>
+          <p>Jogos .io rápidos</p>
+        </a>
+        <a href="https://gabrielnadamacho.github.io" target="_blank" class="card">
+          <h3>📂 Gabriel Nadamacho</h3>
+          <p>Projetos e jogos</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- Tocador de Música -->
+    <div class="player">
+      <h3>🎵 Now Playing</h3>
+      <div class="now-playing">Sub Urban - Cradles</div>
+      
+      <audio id="musicPlayer" controls autoplay loop>
+        <source src="https://cdn.glitch.global/8f6e1f5e-5c5f-4e6e-9e6e-5e5e5e5e5e5e/cradles.mp3" type="audio/mpeg">
+        <!-- Caso queira outro link direto, troque aqui -->
+        Seu navegador não suporta áudio.
+      </audio>
+
+      <p style="text-align:center; font-size:12px; opacity:0.6;">
+        Cradles • Sub Urban
+      </p>
+    </div>
   </div>
 
   <script>
     function verificarSenha() {
-      const senha = document.getElementById("senhaInput").value;
+      const senha = document.getElementById("senhaInput").value.trim();
       const erro = document.getElementById("erro");
+      const senhaBox = document.getElementById("senhaContainer");
 
       if (senha === "5215") {
-        document.getElementById("senhaContainer").style.display = "none";
-        document.getElementById("menuContainer").style.display = "block";
+        senhaBox.style.opacity = "0";
+        setTimeout(() => {
+          senhaBox.style.display = "none";
+          document.getElementById("menuContainer").style.display = "flex";
+        }, 500);
       } else {
-        erro.textContent = "Senha incorreta. Tente novamente.";
+        erro.textContent = "Senha incorreta!";
+        senhaBox.classList.add("shake");
+        setTimeout(() => senhaBox.classList.remove("shake"), 500);
         document.getElementById("senhaInput").value = "";
       }
     }
 
-    // Permite apertar Enter para confirmar a senha
-    document.getElementById("senhaInput").addEventListener("keypress", function(event) {
-      if (event.key === "Enter") {
-        verificarSenha();
-      }
+    // Enter para confirmar senha
+    document.getElementById("senhaInput").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") verificarSenha();
     });
-  </script>
 
+    // Inicia a música automaticamente quando o menu abre
+    window.onload = () => {
+      const audio = document.getElementById("musicPlayer");
+      audio.volume = 0.6; // volume moderado
+    };
+  </script>
 </body>
 </html>
