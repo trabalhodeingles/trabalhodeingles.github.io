@@ -2,584 +2,266 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Trabalho de Inglês do Ronaldo</title>
+<title>Trabalho de Inglês - Ronaldo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
   body {
-    font-family: 'Poppins', sans-serif;
-    background: #07070f;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a0f2e 100%);
+    color: #e0e0ff;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    color: #eee;
+    position: relative;
   }
 
-  canvas#bg {
-    position: fixed;
-    inset: 0;
-    width: 100%; height: 100%;
-    z-index: 0;
-    pointer-events: none;
+  canvas#bg { 
+    position: fixed; 
+    inset: 0; 
+    z-index: 0; 
+    opacity: 0.75;
   }
 
-  /* ── TELA DE SENHA ── */
+  /* === TELA PRINCIPAL === */
   #main {
     position: relative;
     z-index: 10;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
     text-align: center;
-    animation: fadeUp 0.8s ease;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to   { opacity: 1; transform: translateY(0); }
+    animation: fadeIn 1.2s ease;
   }
 
   .lock-icon {
-    font-size: 60px;
-    animation: floatIcon 3.5s ease-in-out infinite;
-    filter: drop-shadow(0 0 20px #7c3aed99);
-  }
-
-  @keyframes floatIcon {
-    0%,100% { transform: translateY(0) rotate(-3deg); }
-    50%     { transform: translateY(-14px) rotate(3deg); }
+    font-size: 72px;
+    margin-bottom: 20px;
+    animation: float 4s ease-in-out infinite;
   }
 
   h1 {
-    font-size: 26px;
+    font-size: 29px;
     font-weight: 700;
-    color: #fff;
-    text-shadow: 0 0 30px #7c3aed99;
+    background: linear-gradient(90deg, #c4b5fd, #a78bfa, #e0bbff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+  }
+
+  .sub {
+    color: #b0b0dd;
+    font-size: 15.5px;
+    margin-bottom: 40px;
     letter-spacing: 0.5px;
   }
 
-  .sub { font-size: 13px; color: #555; }
-
   .pw-box {
-    background: #0f0f1e;
-    border: 1px solid #2a2a45;
-    border-radius: 20px;
-    padding: 32px 44px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    box-shadow: 0 0 60px #7c3aed18, inset 0 0 30px #0005;
-    cursor: text;
-    transition: box-shadow 0.3s;
-    width: 320px;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(167, 139, 250, 0.25);
+    border-radius: 28px;
+    padding: 42px 40px;
+    width: 350px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    transition: all 0.4s ease;
   }
 
-  .pw-box:focus-within {
-    box-shadow: 0 0 80px #7c3aed33, inset 0 0 30px #0005;
-    border-color: #7c3aed55;
+  .pw-box:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 25px 50px rgba(167, 139, 250, 0.15);
   }
 
-  .dots { display: flex; gap: 16px; }
+  .dots { display: flex; gap: 20px; justify-content: center; margin-bottom: 28px; }
 
   .dot {
-    width: 20px; height: 20px;
+    width: 19px; height: 19px;
     border-radius: 50%;
-    background: #1a1a30;
-    border: 2px solid #2a2a45;
-    transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    background: rgba(255,255,255,0.12);
+    border: 2.5px solid rgba(167, 139, 250, 0.4);
+    transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
   }
 
   .dot.filled {
-    background: #7c3aed;
-    border-color: #7c3aed;
-    box-shadow: 0 0 14px #7c3aed, 0 0 28px #7c3aed55;
-    transform: scale(1.15);
+    background: #a78bfa;
+    border-color: #c4b5fd;
+    box-shadow: 0 0 25px #a78bfa;
+    transform: scale(1.25);
   }
 
-  .dot.wrong {
-    background: #dc2626;
-    border-color: #dc2626;
-    box-shadow: 0 0 14px #dc2626;
-    transform: scale(1.1);
-  }
+  .dot.ok { background: #4ade80; box-shadow: 0 0 25px #4ade80; }
+  .dot.wrong { background: #f87171; box-shadow: 0 0 25px #f87171; }
 
-  .dot.ok {
-    background: #16a34a;
-    border-color: #16a34a;
-    box-shadow: 0 0 14px #16a34a;
-    transform: scale(1.15);
-  }
+  .hint { color: #8888bb; font-size: 13.5px; letter-spacing: 1.5px; }
 
-  .pw-input {
-    position: absolute;
-    opacity: 0;
-    width: 1px; height: 1px;
-    pointer-events: none;
-  }
-
-  .hint { font-size: 11px; color: #333; letter-spacing: 1px; }
-
-  @keyframes shakeBox {
-    0%,100% { transform: translateX(0); }
-    15%     { transform: translateX(-10px); }
-    30%     { transform: translateX(10px); }
-    45%     { transform: translateX(-8px); }
-    60%     { transform: translateX(8px); }
-    75%     { transform: translateX(-4px); }
-    90%     { transform: translateX(4px); }
-  }
-
-  .shake { animation: shakeBox 0.5s ease; }
-
-  /* ── TELA "TRABALHO NÃO FEITO" ── */
-  #nao-feito {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 200;
-    background: #07070f;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 20px;
-    text-align: center;
-    animation: fadeUp 0.6s ease;
-  }
-
-  .nf-icon { font-size: 72px; animation: floatIcon 3s ease-in-out infinite; }
-
-  .nf-title {
-    font-size: 28px;
-    font-weight: 700;
-    color: #f87171;
-    text-shadow: 0 0 20px #dc262688;
-  }
-
-  .nf-sub { font-size: 14px; color: #555; max-width: 300px; line-height: 1.7; }
-
-  .nf-bar {
-    width: 260px; height: 6px;
-    background: #1a1a30;
-    border-radius: 99px;
-    overflow: hidden;
-    margin-top: 8px;
-  }
-
-  .nf-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #dc2626, #f87171);
-    border-radius: 99px;
-    animation: fillRed 2s ease forwards 0.3s;
-  }
-
-  @keyframes fillRed { to { width: 30%; } }
-
-  .nf-btn {
-    margin-top: 12px;
-    padding: 10px 28px;
-    background: none;
-    border: 1px solid #2a2a45;
-    border-radius: 10px;
-    color: #555;
-    font-family: 'Poppins', sans-serif;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .nf-btn:hover { border-color: #555; color: #999; }
-
-  /* ── OVERLAY DO PORTAL ── */
-  #portal-anim {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 150;
-    background: #07070f;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .p-ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 2px solid #7c3aed;
-    opacity: 0;
-  }
-
-  @keyframes ringExpand {
-    0%   { transform: scale(0); opacity: 0.8; }
-    100% { transform: scale(25); opacity: 0; }
-  }
-
-  @keyframes coreAnim {
-    0%   { transform: scale(0) rotate(0deg); opacity: 0; filter: blur(20px); }
-    30%  { transform: scale(1.1) rotate(120deg); opacity: 1; filter: blur(0); }
-    70%  { transform: scale(1) rotate(260deg); opacity: 1; }
-    100% { transform: scale(30) rotate(360deg); opacity: 0; filter: blur(8px); }
-  }
-
-  .p-core {
-    width: 130px; height: 130px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 40% 40%, #a78bfa, #7c3aed, #1e1b4b);
-    box-shadow: 0 0 80px #7c3aed, 0 0 160px #7c3aed55;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 44px;
-    z-index: 2;
-  }
-
-  @keyframes labelAnim {
-    0%   { opacity: 0; letter-spacing: 8px; }
-    40%  { opacity: 1; letter-spacing: 6px; }
-    80%  { opacity: 1; }
-    100% { opacity: 0; }
-  }
-
-  .p-label {
-    position: absolute;
-    bottom: 28%;
-    font-size: 13px;
-    color: #a78bfa;
-    letter-spacing: 6px;
-    text-transform: uppercase;
-    opacity: 0;
-  }
-
-  /* ── PORTAL DE JOGOS ── */
-  #game-portal {
-    display: none;
-    position: relative;
-    z-index: 10;
-    width: 100%;
-    max-width: 800px;
-    padding: 40px 20px 60px;
-  }
-
-  .gp-header {
-    text-align: center;
-    margin-bottom: 36px;
-    animation: fadeUp 0.6s ease;
-  }
-
-  .gp-header h2 {
-    font-size: 26px;
-    font-weight: 700;
-    color: #fff;
-    text-shadow: 0 0 24px #7c3aed88;
-  }
-
-  .gp-header p { font-size: 13px; color: #444; margin-top: 4px; }
-
-  .divider {
-    width: 60px; height: 2px;
-    background: linear-gradient(90deg, transparent, #7c3aed, transparent);
-    margin: 12px auto 0;
-    border-radius: 2px;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-    gap: 14px;
-  }
-
-  .card {
-    background: #0f0f1e;
-    border: 1px solid #1e1e35;
-    border-radius: 16px;
-    padding: 22px 18px;
-    text-decoration: none;
-    color: #ccc;
-    display: block;
-    opacity: 0;
-    transform: translateY(20px) scale(0.96);
-    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s, border-color 0.3s, background 0.3s;
-  }
-
-  .card.visible {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-
-  .card:hover {
-    transform: translateY(-5px) scale(1.03);
-    border-color: #7c3aed55;
-    box-shadow: 0 10px 40px #7c3aed22;
-    background: #13132a;
-  }
-
-  .card-icon { font-size: 34px; margin-bottom: 12px; }
-  .card-name { font-weight: 600; font-size: 14px; color: #fff; margin-bottom: 4px; }
-  .card-desc { font-size: 12px; color: #444; }
-
-  .back-btn {
-    display: block;
-    margin: 28px auto 0;
-    background: none;
-    border: 1px solid #1e1e35;
-    border-radius: 10px;
-    padding: 10px 28px;
-    color: #333;
-    font-family: 'Poppins', sans-serif;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .back-btn:hover { border-color: #444; color: #777; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
 </style>
 </head>
 <body>
 
 <canvas id="bg"></canvas>
 
-<!-- TELA SENHA -->
+<!-- TELA DE SENHA -->
 <div id="main">
   <div class="lock-icon">🔐</div>
-  <h1>Trabalho de Inglês do Ronaldo</h1>
-  <div class="sub">Digite a senha para continuar</div>
-  <div class="pw-box" id="pwbox" onclick="document.getElementById('pw').focus()">
+  <h1>English Project</h1>
+  <p class="sub">Enter the password to unlock</p>
+  
+  <div class="pw-box" id="pwbox">
     <div class="dots">
       <div class="dot" id="d0"></div>
       <div class="dot" id="d1"></div>
       <div class="dot" id="d2"></div>
       <div class="dot" id="d3"></div>
     </div>
-    <div class="hint">clique e digite a senha</div>
+    <div class="hint">CLICK HERE AND TYPE</div>
     <input class="pw-input" id="pw" type="password" maxlength="4" autocomplete="off" />
   </div>
 </div>
 
-<!-- TELA NÃO FEITO -->
-<div id="nao-feito">
-  <div class="nf-icon">😬</div>
-  <div class="nf-title">Trabalho ainda não feito</div>
-  <div class="nf-sub">Ops... parece que o Ronaldo ainda não terminou esse trabalho. Tente de novo mais tarde!</div>
-  <div class="nf-bar"><div class="nf-fill"></div></div>
-  <button class="nf-btn" onclick="voltarDaNF()">← voltar</button>
+<!-- Telas restantes (não feito + portal) -->
+<div id="nao-feito" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(10,10,15,0.98);align-items:center;justify-content:center;flex-direction:column;">
+  <h2 style="color:#f87171;font-size:34px;margin-bottom:16px;">Not finished yet 😬</h2>
+  <p style="color:#aaa;max-width:340px;text-align:center;line-height:1.6;">The project is still under construction.<br>Come back later.</p>
+  <button onclick="voltarDaNF()" style="margin-top:40px;padding:14px 36px;background:transparent;border:1px solid #666;color:#ddd;border-radius:14px;cursor:pointer;">← Back</button>
 </div>
 
-<!-- ANIMAÇÃO PORTAL -->
-<div id="portal-anim">
-  <div class="p-ring" id="r1" style="width:130px;height:130px;"></div>
-  <div class="p-ring" id="r2" style="width:180px;height:180px;border-color:#a78bfa;"></div>
-  <div class="p-ring" id="r3" style="width:240px;height:240px;border-color:#4c1d95;"></div>
-  <div class="p-ring" id="r4" style="width:300px;height:300px;border-color:#2e1065;"></div>
-  <div class="p-core" id="pcore">🎮</div>
-  <div class="p-label" id="plabel">Portal Aberto</div>
-</div>
-
-<!-- PORTAL JOGOS -->
-<div id="game-portal">
-  <div class="gp-header">
-    <h2>🎮 Portal de Jogos</h2>
-    <p>Bem-vindo, Ronaldo</p>
-    <div class="divider"></div>
-  </div>
-  <div class="grid">
-    <a class="card" href="https://shellshock.io/" target="_blank">
-      <div class="card-icon">🥚</div>
-      <div class="card-name">Shell Shockers</div>
-      <div class="card-desc">FPS de ovos online</div>
-    </a>
-    <a class="card" href="https://ubg365.org/category/arcade" target="_blank">
-      <div class="card-icon">🕹️</div>
-      <div class="card-name">UBG365 Arcade</div>
-      <div class="card-desc">Jogos desbloqueados</div>
-    </a>
-    <a class="card" href="https://retrogames.games/pt" target="_blank">
-      <div class="card-icon">👾</div>
-      <div class="card-name">Retro Games</div>
-      <div class="card-desc">Clássicos e emuladores</div>
-    </a>
-    <a class="card" href="https://www.ps1fun.com/?ch=b" target="_blank">
-      <div class="card-icon">📀</div>
-      <div class="card-name">PS1 Fun</div>
-      <div class="card-desc">PlayStation 1 online</div>
-    </a>
-    <a class="card" href="https://emupedia.net/beta/emuos/" target="_blank">
-      <div class="card-icon">💾</div>
-      <div class="card-name">EmuOS</div>
-      <div class="card-desc">Sistema retro emulado</div>
-    </a>
-    <a class="card" href="http://gabrielnadamacho.github.io" target="_blank">
-      <div class="card-icon">⛏️</div>
-      <div class="card-name">Minecraft 1.20</div>
-      <div class="card-desc">Jogo online</div>
-    </a>
-    <a class="card" href="http://veck.io" target="_blank">
-      <div class="card-icon">⚡</div>
-      <div class="card-name">Veck.io</div>
-      <div class="card-desc">Jogo online</div>
-    </a>
-    <a class="card" href="https://proxypal.net/" target="_blank">
-      <div class="card-icon">🔓</div>
-      <div class="card-name">ProxyPal</div>
-      <div class="card-desc">Acesso desbloqueado</div>
-    </a>
-    <a class="card" href="https://parsec.app/" target="_blank">
-      <div class="card-icon">🖥️</div>
-      <div class="card-name">Parsec</div>
-      <div class="card-desc">Streaming de jogos</div>
-    </a>
-    <a class="card" href="https://krunker.io/" target="_blank">
-      <div class="card-icon">🎯</div>
-      <div class="card-name">Krunker.io</div>
-      <div class="card-desc">FPS online no navegador</div>
-    </a>
-    <a class="card" href="https://fallzone.io/" target="_blank">
-      <div class="card-icon">🪂</div>
-      <div class="card-name">FallZone.io</div>
-      <div class="card-desc">Jogo online multiplayer</div>
-    </a>
-    <a class="card" href="https://growden.io/" target="_blank">
-      <div class="card-icon">🌱</div>
-      <div class="card-name">Growden.io</div>
-      <div class="card-desc">Jogo online multiplayer</div>
-    </a>
-  </div>
-  <button class="back-btn" onclick="voltar()">← voltar</button>
+<div id="game-portal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(10,10,15,0.98);align-items:center;justify-content:center;flex-direction:column;overflow:auto;padding:20px;">
+  <h2 style="font-size:32px;margin-bottom:10px;">Game Portal</h2>
+  <p style="color:#aaa;margin-bottom:40px;">Choose your game</p>
+  <!-- Seus jogos aqui -->
+  <button onclick="voltar()" style="margin-top:30px;padding:12px 36px;background:transparent;border:1px solid #666;color:#ddd;border-radius:14px;">← Back</button>
 </div>
 
 <script>
-  // ── PARTÍCULAS ──
-  const canvas = document.getElementById('bg');
-  const ctx = canvas.getContext('2d');
-  let W, H;
-  const pts = [];
+// ==================== PARTÍCULAS MELHORADAS ====================
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
 
-  function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
-  resize();
-  window.addEventListener('resize', resize);
-
-  for (let i = 0; i < 100; i++) {
-    pts.push({
-      x: Math.random() * innerWidth,
-      y: Math.random() * innerHeight,
-      r: Math.random() * 1.6 + 0.2,
-      dx: (Math.random() - 0.5) * 0.35,
-      dy: (Math.random() - 0.5) * 0.35,
-      a: Math.random() * 0.7 + 0.1,
-      pulse: Math.random() * Math.PI * 2
-    });
+class Particle {
+  constructor() {
+    this.reset();
   }
-
-  function drawBg(t) {
-    ctx.clearRect(0, 0, W, H);
-    pts.forEach(p => {
-      p.pulse += 0.015;
-      const a = p.a * (0.5 + 0.5 * Math.sin(p.pulse));
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(124,58,237,${a})`;
-      ctx.fill();
-      p.x += p.dx; p.y += p.dy;
-      if (p.x < 0) p.x = W;
-      if (p.x > W) p.x = 0;
-      if (p.y < 0) p.y = H;
-      if (p.y > H) p.y = 0;
-    });
-    requestAnimationFrame(drawBg);
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.size = Math.random() * 2.2 + 0.6;
+    this.speedX = Math.random() * 0.6 - 0.3;
+    this.speedY = Math.random() * 0.6 - 0.3;
+    this.opacity = Math.random() * 0.6 + 0.3;
+    this.hue = 260 + Math.random() * 20;
   }
-  drawBg();
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    this.opacity -= 0.002;
 
-  // ── SENHA ──
-  const pw    = document.getElementById('pw');
-  const pwbox = document.getElementById('pwbox');
-  const dots  = [0,1,2,3].map(i => document.getElementById('d'+i));
-
-  pwbox.addEventListener('click', () => pw.focus());
-
-  pw.addEventListener('input', () => {
-    const len = pw.value.length;
-    dots.forEach((d,i) => d.className = 'dot' + (i < len ? ' filled' : ''));
-
-    if (len < 4) return;
-
-    if (pw.value === '5215') {
-      dots.forEach(d => d.className = 'dot ok');
-      setTimeout(abrirPortal, 500);
-
-    } else if (pw.value === '2012') {
-      dots.forEach(d => d.className = 'dot ok');
-      setTimeout(() => {
-        document.getElementById('main').style.display = 'none';
-        const nf = document.getElementById('nao-feito');
-        nf.style.display = 'flex';
-        // reinicia barra
-        const fill = nf.querySelector('.nf-fill');
-        fill.style.animation = 'none';
-        void fill.offsetWidth;
-        fill.style.animation = 'fillRed 2s ease forwards 0.3s';
-      }, 400);
-
-    } else {
-      dots.forEach(d => d.className = 'dot wrong');
-      pwbox.classList.add('shake');
-      setTimeout(() => {
-        pw.value = '';
-        dots.forEach(d => d.className = 'dot');
-        pwbox.classList.remove('shake');
-      }, 600);
+    if (this.opacity <= 0 || this.x < 0 || this.x > W || this.y < 0 || this.y > H) {
+      this.reset();
     }
+  }
+  draw() {
+    ctx.save();
+    ctx.globalAlpha = this.opacity;
+    ctx.fillStyle = `hsl(${this.hue}, 80%, 85%)`;
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = `hsl(${this.hue}, 90%, 70%)`;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// Criar partículas
+for (let i = 0; i < 160; i++) {
+  particles.push(new Particle());
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => {
+    p.update();
+    p.draw();
   });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
 
-  // ── ABRIR PORTAL ──
-  function abrirPortal() {
+// ==================== SENHA ESCONDIDA ====================
+const pw = document.getElementById('pw');
+const pwbox = document.getElementById('pwbox');
+const dots = [0,1,2,3].map(i => document.getElementById('d'+i));
+
+const _h = (s) => s.split('').reduce((a,c) => (a << 5) - a + c.charCodeAt(0), 0) >>> 0;
+
+pwbox.addEventListener('click', () => pw.focus());
+
+pw.addEventListener('input', () => {
+  const len = pw.value.length;
+  dots.forEach((d,i) => d.className = i < len ? 'dot filled' : 'dot');
+
+  if (len === 4) {
+    const hash = _h(pw.value);
+    if (hash === 0x8f3a2b1c) success();           
+    else if (hash === 0x7d2e9f4a) failScreen();   
+    else wrong();
+  }
+});
+
+function success() {
+  dots.forEach(d => d.className = 'dot ok');
+  setTimeout(() => {
     document.getElementById('main').style.display = 'none';
-    const anim = document.getElementById('portal-anim');
-    anim.style.display = 'flex';
+    document.getElementById('game-portal').style.display = 'flex';
+  }, 600);
+}
 
-    const core  = document.getElementById('pcore');
-    const label = document.getElementById('plabel');
-    const rings = ['r1','r2','r3','r4'].map(id => document.getElementById(id));
+function failScreen() {
+  dots.forEach(d => d.className = 'dot ok');
+  setTimeout(() => {
+    document.getElementById('main').style.display = 'none';
+    document.getElementById('nao-feito').style.display = 'flex';
+  }, 500);
+}
 
-    core.style.animation  = 'coreAnim 1.6s cubic-bezier(0.34,1.2,0.64,1) forwards';
-    label.style.animation = 'labelAnim 1.6s ease forwards 0.4s';
-
-    rings.forEach((r, i) => {
-      setTimeout(() => {
-        r.style.animation = 'ringExpand 1.2s ease forwards';
-      }, i * 100);
-    });
-
-    setTimeout(() => {
-      anim.style.display = 'none';
-      // reset animações
-      core.style.animation = 'none';
-      label.style.animation = 'none';
-      rings.forEach(r => r.style.animation = 'none');
-
-      const gp = document.getElementById('game-portal');
-      gp.style.display = 'block';
-      document.querySelectorAll('.card').forEach((c, i) => {
-        setTimeout(() => c.classList.add('visible'), 60 + i * 70);
-      });
-    }, 1700);
-  }
-
-  function voltar() {
-    document.getElementById('game-portal').style.display = 'none';
-    document.getElementById('main').style.display = 'flex';
+function wrong() {
+  dots.forEach(d => d.className = 'dot wrong');
+  pwbox.classList.add('shake');
+  setTimeout(() => {
     pw.value = '';
     dots.forEach(d => d.className = 'dot');
-    document.querySelectorAll('.card').forEach(c => c.classList.remove('visible'));
-  }
+    pwbox.classList.remove('shake');
+  }, 600);
+}
 
-  function voltarDaNF() {
-    document.getElementById('nao-feito').style.display = 'none';
-    document.getElementById('main').style.display = 'flex';
-    pw.value = '';
-    dots.forEach(d => d.className = 'dot');
-  }
+function voltar() {
+  document.getElementById('game-portal').style.display = 'none';
+  document.getElementById('main').style.display = 'flex';
+  reset();
+}
+
+function voltarDaNF() {
+  document.getElementById('nao-feito').style.display = 'none';
+  document.getElementById('main').style.display = 'flex';
+  reset();
+}
+
+function reset() {
+  pw.value = '';
+  dots.forEach(d => d.className = 'dot');
+}
 </script>
 </body>
 </html>
