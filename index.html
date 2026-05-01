@@ -22,6 +22,7 @@
       height: 100vh;
       max-width: 1200px;
       margin: 0 auto;
+      padding: 30px;
     }
 
     /* Tela de Senha */
@@ -80,20 +81,12 @@
       75% { transform: translateX(-5px); }
       100% { transform: translateX(0); }
     }
-
     .shake { animation: shake 0.4s ease; }
 
     /* Menu Principal */
-    #menuContainer {
-      display: none;
-      flex: 1;
-      padding: 30px;
-      overflow-y: auto;
-    }
-
     .header {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
     }
 
     .header h1 {
@@ -130,35 +123,6 @@
       margin: 10px 0 8px;
       color: #c4b5fd;
     }
-
-    /* Player de Música */
-    .player {
-      width: 380px;
-      background: rgba(15, 15, 35, 0.95);
-      border-left: 1px solid #6b46c1;
-      padding: 25px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .player h3 {
-      text-align: center;
-      color: #c026d3;
-      font-family: 'Orbitron', sans-serif;
-    }
-
-    audio {
-      width: 100%;
-      filter: drop-shadow(0 0 8px #a855f7);
-    }
-
-    .now-playing {
-      text-align: center;
-      font-size: 14px;
-      opacity: 0.8;
-    }
   </style>
 </head>
 <body>
@@ -173,16 +137,14 @@
     <p id="erro" style="color: #ff4d4d; margin-top: 15px; min-height: 24px;"></p>
   </div>
 
-  <!-- Conteúdo Principal -->
-  <div class="container" id="menuContainer">
-
-    <!-- Lista de Sites -->
-    <div id="menuContainer" style="flex:1;">
+  <!-- Menu Principal (Lista de Sites) -->
+  <div class="container" id="menuContainer" style="display: none;">
+    <div style="flex: 1;">
       <div class="header">
         <h1>ESCOLHA O JOGO</h1>
         <p style="opacity:0.7;">Se divirta com responsabilidade 😉</p>
       </div>
-
+      
       <div class="sites">
         <a href="https://ubg365.org/category/arcade" target="_blank" class="card">
           <h3>🕹️ UBG365 Arcade</h3>
@@ -210,22 +172,6 @@
         </a>
       </div>
     </div>
-
-    <!-- Tocador de Música -->
-    <div class="player">
-      <h3>🎵 Now Playing</h3>
-      <div class="now-playing">Sub Urban - Cradles</div>
-      
-      <audio id="musicPlayer" controls autoplay loop>
-        <source src="https://cdn.glitch.global/8f6e1f5e-5c5f-4e6e-9e6e-5e5e5e5e5e5e/cradles.mp3" type="audio/mpeg">
-        <!-- Caso queira outro link direto, troque aqui -->
-        Seu navegador não suporta áudio.
-      </audio>
-
-      <p style="text-align:center; font-size:12px; opacity:0.6;">
-        Cradles • Sub Urban
-      </p>
-    </div>
   </div>
 
   <script>
@@ -248,16 +194,10 @@
       }
     }
 
-    // Enter para confirmar senha
+    // Permite apertar Enter para confirmar senha
     document.getElementById("senhaInput").addEventListener("keypress", (e) => {
       if (e.key === "Enter") verificarSenha();
     });
-
-    // Inicia a música automaticamente quando o menu abre
-    window.onload = () => {
-      const audio = document.getElementById("musicPlayer");
-      audio.volume = 0.6; // volume moderado
-    };
   </script>
 </body>
 </html>
