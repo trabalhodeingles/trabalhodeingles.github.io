@@ -214,8 +214,8 @@ pw.addEventListener('input', () => {
 
   if (len === 4) {
     const hash = _h(pw.value);
-    if (hash === 0x8f3a2b1c) success();           
-    else if (hash === 0x7d2e9f4a) failScreen();   
+    if (hash === 0x8f3a2b1c) success();           // 5215
+    else if (hash === 0x7d2e9f4a) failScreen();   // 2012
     else wrong();
   }
 });
